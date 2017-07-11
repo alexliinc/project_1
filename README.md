@@ -13,7 +13,9 @@ Day 1:<br/>
 -Created my repo <br/>
 -Pushed basic files html js css<br/>
   -nothing in them<br/>
--Will continue to update
+-Will continue to update<br/>
 
-
+Day 2:<br/>
+-Created a Trello for everything<br/>
+[Trello](https://trello.com/b/AdC1lR8I/space-racer)<br/>
 

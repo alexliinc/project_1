@@ -2,7 +2,7 @@ Project Name: Space Racer<br/>
 Author: Alex Li<br/>
 Developer @GA in DENVER<br/>
 <hr />
-#   WELCOME!!!<br/>
+<h1>WELCOME!!!</h1><br/>
 
 Project Idea:<br/>
 Player is a spaceship who is trying to nagivate through an asteroid belt. <br/>

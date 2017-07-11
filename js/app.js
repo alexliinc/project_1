@@ -1,3 +1,5 @@
+//Changed
+
 // Defining an object to hold all images
  var imageRepository = new function() {
    // Define images

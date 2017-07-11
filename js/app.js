@@ -1,4 +1,4 @@
-//Changed
+
 
 // Defining an object to hold all images
  var imageRepository = new function() {
@@ -6,7 +6,7 @@
    this.background = new Image();
 
    // Set images src
-   this.background.src = "img/spacebackground.png";
+   this.background.src = "img/bg.png";
  };
 
 // Creating a drawable object to create the images
@@ -69,7 +69,7 @@ function Game(){
   };
 
   // Start the animation loop
-  this.start = funtion() {
+  this.start = function(){
     animate();
   };
 };

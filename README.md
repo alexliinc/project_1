@@ -8,7 +8,7 @@ Project Idea:<br/>
 Player is a spaceship who is trying to nagivate through an astriod belt. <br/>
 
 Day 1:<br/>
-<img src="../img/wireframe1.JPG "First Wireframe" width="350"/>
+[[/img/wireframe1.JPG "First Wireframe]]<br/>
 -Created my repo <br/>
 -Pushed basic files html js css<br/>
   -nothing in them<br/>

@@ -1,10 +1,17 @@
-Project Name: Space Racer
-Author: Alex Li
-Developer @GA in DENVER
+Project Name: Space Racer<br/>
+Author: Alex Li<br/>
+Developer @GA in DENVER<br/>
 
-WELCOME!!!
-Day 1:
--Created my repo
--
+WELCOME!!!<br/>
 
-![Alt text](../img/wireframe1.JPG "First Wireframe")
+Project Idea:<br/>
+Player is a spaceship who is trying to nagivate through an astriod belt. <br/>
+
+Day 1:<br/>
+<img src="../img/wireframe1.JPG "First Wireframe" width="350"/>
+-Created my repo <br/>
+-Pushed basic files html js css<br/>
+  -nothing in them<br/>
+
+
+

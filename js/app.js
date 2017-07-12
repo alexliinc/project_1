@@ -16,19 +16,15 @@
 			window.init();
 		}
    }
-
    this.background.onload = function(){
      imgLoaded();
    }
-
    this.spaceship.onload = function(){
      imgLoaded();
    }
-
   //  this.bullet.onload = function(){
   //    imgLoaded();
   //  }
-
    // Set images src
    this.background.src = "img/bg.png";
    this.spaceship.src = "img/ship.png";
@@ -80,14 +76,62 @@ function Ship(){
   };
   // Determine if the action is a move action
   this.move = function(){
-    if (KEY_STATUS.left || KEY_STATUS.right ||
-			  KEY_STATUS.down || KEY_STATUS.up){
+    if (KEY_STATUS.left || KEY_STATUS.right){
           // Remove image and redraw new image
           this.context.clearRect(this.x, this.y, this.width, this.length);
-
+          // Update x according to the direction to move and
+    			// redraw the ship.
+          if (KEY_STATUS.left) {
+            this.x -= this.speed
+            if (this.x <= 0){
+              // Keep player within the screen
+                this.x = 0;
+            }
+          } else
+          if (KEY_STATUS.right) {
+            this.x += this.speed
+    				if (this.x >= this.canvasWidth - this.width){
+              this.x = this.canvasWidth - this.width;
+            }
+          }
+      // Finish by redrawing the ship
+			this.draw();
     }
   };
 }
+Ship.prototype = new Drawable();
+
+KEY_CODES = {
+  32: 'space',
+  37: 'left',
+  38: 'up',
+  39: 'right',
+  40: 'down',
+}
+
+// Creating array to hold the KEY_CODES and set the al to false
+KEY_STATUS = {};
+for (code in KEY_CODES) {
+  KEY_STATUS[KEY_CODES[code]] = false;
+}
+
+// When key is pushed down
+document.onkeydown = function(e){
+  var keyCode = (e.keyCode) ? e.keyCode : e.charCode;
+  if (KEY_CODES[keyCode]){
+    e.preventDefault();
+    KEY_STATUS[KEY_CODES[keyCode]] = true;
+  };
+};
+
+// When key is let go of or up
+document.onkeyup = function(e){
+  var keyCode = (e.keyCode) ? e.keyCode : e.charCode;
+  if (KEY_CODES[keyCode]){
+    e.preventDefault();
+    KEY_STATUS[KEY_CODES[keyCode]] = false;
+  };
+};
 
 // Creates the game object that holds all the objects and data for game
 function Game(){
@@ -95,18 +139,33 @@ function Game(){
   this.init = function(){
     // Get the canvas element this.bgCanvas is background of the canvas
     this.bgCanvas = document.getElementById('background');
+    this.shipCanvas = document.getElementById('ship');
+    this.mainCanvas = document.getElementById('main');
     // Test to see if canvas is supported
     if (this.bgCanvas.getContext){
       // This is basically telling Js that the context of the drawing is going to be one of 2 dimensional
       this.bgContext = this.bgCanvas.getContext('2d');
+      this.shipContext = this.shipCanvas.getContext('2d');
+      this.mainContext = this.mainCanvas.getContext('2d');
       // Initalize object to contain their context and canvas
+      // Background
       Background.prototype.context = this.bgContext;
       Background.prototype.canvasWidth = this.bgCanvas.width;
       Background.prototype.canvasHeight = this.bgCanvas.height;
+      // Ship
+      Ship.prototype.context = this.shipContext;
+      Ship.prototype.canvasWidth = this.shipContext.width;
+      Ship.prototype.canvasHeight = this.shipContext.height;
 
       // Initalizethe background object
       this.background = new Background();
       this.background.init(0,0);
+
+      // Initalize ship object
+      this.ship = new Ship();
+      var shipStartX = this.shipCanvas.width/2 - imageRepository.spaceship.width;
+      var shipStartY = this.shipCanvas.height/4 * 3 + imageRepository.spaceship.height;
+      this.ship.init(shipStartX, shipStartY, imageRepository.spaceship.width, imageRepository.spaceship.height);
       return true;
     } else {
         return false;
@@ -115,6 +174,7 @@ function Game(){
 
   // Start the animation loop
   this.start = function(){
+    this.ship.draw();
     animate();
   };
 };
@@ -124,6 +184,7 @@ function Game(){
 function animate() {
   requestAnimeFrame( animate );
   game.background.draw();
+  game.ship.move();
 }
 
 window.requestAnimeFrame = (function(){

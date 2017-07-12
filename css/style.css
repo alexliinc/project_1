@@ -6,6 +6,9 @@ body{
 
 h1{
   font-family: 'Revalia', cursive;
+  color:#0CFFE1;
+  font-size: 50px;
+
 }
 
 canvas {
@@ -13,7 +16,8 @@ canvas {
   top: 0px;
   left: 0px;
   background: transparent;
-  border:yellow 3px solid;
+  border:#FFD687 3px solid;
+  
 }
 
 #background {

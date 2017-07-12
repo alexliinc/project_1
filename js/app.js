@@ -5,10 +5,10 @@
    // Define images
    this.background = new Image();
    this.spaceship = new Image();
-   //this.bullet = new Image();
+   this.enemy = new Image();
 
    // Making sure all images have loaded before starting the game
-   var numImages = 2;//3
+   var numImages = 3;
    var numLoaded = 0;
    function imgLoaded(){
      numLoaded++;
@@ -22,32 +22,41 @@
    this.spaceship.onload = function(){
      imgLoaded();
    }
-  //  this.bullet.onload = function(){
-  //    imgLoaded();
-  //  }
-   // Set images src
+   this.enemy.onload =function(){
+     imgLoaded();
+   }
    this.background.src = "img/bg.png";
    this.spaceship.src = "img/ship.png";
-   //this.bullet.src = "img/bg.png";
+   this.enemy.src = "img/enemy.png";
  };
 
 // Creating a drawable object to create the images
+// function Drawable() {
+//   this.init = function(x,y,width,height){
+//       // Default variables;
+//       this.x = x;
+//       this.y = y;
+//       this.width = width;
+//       this.height = height;
+//   };
+//   this.speed = 0;
+//   this.canvasWidth = 0;
+//   this.canvasHeight = 0;
+//
+//   // Defining abstract funtion to be implented to child objects
+//   this.draw = function(){
+//   };
+// };
 function Drawable() {
-  this.init = function(x,y,width,height){
-      // Default variables;
-      this.x = x;
-      this.y = y;
-      this.width = width;
-      this.height = height;
-  };
-  this.speed = 0;
-  this.canvasWidth = 0;
-  this.canvasHeight = 0;
+	this.init = function(x, y, width, height) {
+		// Defualt variables
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+	}
+}
 
-  // Defining abstract funtion to be implented to child objects
-  this.draw = function(){
-  };
-};
 
 // Creating background object
 function Background(){
@@ -68,6 +77,56 @@ function Background(){
 
 Background.prototype = new Drawable();
 
+// Create the enemy
+function Enemy(){
+  this.alive = false;
+  this.spawn = function(x, y, speed){
+    this.x = x;
+    this.y = y;
+    this.speed = speed;
+    this.speedX = 0;
+    this.speedY = speed;
+    this.alive = true;
+    this.leftEdge = this.x - 90;
+    this.rightEdge = this.x + 90;
+    this.bottomEdge = this.y + 140;
+  }
+  // drawing the enemy
+  this.draw = function() {
+    this.context.clearRect(this.x-1, this.y, this.width+1, this.height);
+    this.x += this.speedX;
+    this.y += this.speedY;
+    this.context.drawImage(imageRepository.enemy, this.x, this.y);
+  }
+
+  // reset enemy values
+  this.clear = function(){
+    this.x = 0;
+    this.y = 0;
+    this.speed = 0;
+    this.speedX = 0;
+    this.speedY = 0;
+    this.alive = false;
+  };
+};
+Enemy.prototype = new Drawable();
+
+// Pool of objects enemies
+function Pool(maxSize){
+  var size = maxSize;
+  var pool = [];
+
+  this.init = function(object) {
+    if (object == "enemy"){
+      for (var i = 0; i < size; i++){
+        var enemy = new Enemy();
+        enemy.init(0,0,imageRepository.enemy.width, imageRepository.enemy.height);
+        pool[i] = enemy;
+      }
+    }
+  };
+};
+
 // Create Ship object
 function Ship(){
   this.speed = 3;
@@ -78,27 +137,28 @@ function Ship(){
   this.move = function(){
     if (KEY_STATUS.left || KEY_STATUS.right){
           // Remove image and redraw new image
-          this.context.clearRect(this.x, this.y, this.width, this.length);
+          this.context.clearRect(this.x, this.y, this.width, this.height);
           // Update x according to the direction to move and
     			// redraw the ship.
           if (KEY_STATUS.left) {
             this.x -= this.speed
             if (this.x <= 0){
               // Keep player within the screen
-                this.x = 0;
+              this.x = 0;
             }
           } else
           if (KEY_STATUS.right) {
             this.x += this.speed
-    				if (this.x >= this.canvasWidth - this.width){
-              this.x = this.canvasWidth - this.width;
+    				if (this.x >= 360 - this.width){
+              // Keep player within the screen
+              this.x = 360 - this.width;
             }
           }
       // Finish by redrawing the ship
 			this.draw();
     }
   };
-}
+};
 Ship.prototype = new Drawable();
 
 KEY_CODES = {
@@ -137,6 +197,7 @@ document.onkeyup = function(e){
 function Game(){
   // Gets the canvas information for init set up
   this.init = function(){
+
     // Get the canvas element this.bgCanvas is background of the canvas
     this.bgCanvas = document.getElementById('background');
     this.shipCanvas = document.getElementById('ship');
@@ -156,6 +217,11 @@ function Game(){
       Ship.prototype.context = this.shipContext;
       Ship.prototype.canvasWidth = this.shipContext.width;
       Ship.prototype.canvasHeight = this.shipContext.height;
+      // Enemy
+      Enemy.prototype.context = this.mainContext;
+      Enemy.prototype.canvasWidth = this.mainContext.width;
+      Enemy.prototype.canvasHeight = this.mainContext.height;
+
 
       // Initalizethe background object
       this.background = new Background();
@@ -166,6 +232,7 @@ function Game(){
       var shipStartX = this.shipCanvas.width/2 - imageRepository.spaceship.width;
       var shipStartY = this.shipCanvas.height/4 * 3 + imageRepository.spaceship.height;
       this.ship.init(shipStartX, shipStartY, imageRepository.spaceship.width, imageRepository.spaceship.height);
+
       return true;
     } else {
         return false;

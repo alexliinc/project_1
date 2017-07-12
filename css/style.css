@@ -1,3 +1,13 @@
+body{
+  background: url('../img/spacebackground.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+h1{
+  font-family: 'Revalia', cursive;
+}
+
 canvas {
   position: absolute;
   top: 0px;
@@ -16,4 +26,12 @@ canvas {
 
 #ship {
   z-index: 0;
+}
+
+#center{
+  /*width: 360px;
+  height:600px;
+  margin: 0px auto;
+  border: 1px solid red;
+  text-align: center;*/
 }

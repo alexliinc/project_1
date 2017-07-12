@@ -4,17 +4,45 @@
  var imageRepository = new function() {
    // Define images
    this.background = new Image();
+   this.spaceship = new Image();
+   //this.bullet = new Image();
+
+   // Making sure all images have loaded before starting the game
+   var numImages = 2;//3
+   var numLoaded = 0;
+   function imgLoaded(){
+     numLoaded++;
+     if (numLoaded === numImages) {
+			window.init();
+		}
+   }
+
+   this.background.onload = function(){
+     imgLoaded();
+   }
+
+   this.spaceship.onload = function(){
+     imgLoaded();
+   }
+
+  //  this.bullet.onload = function(){
+  //    imgLoaded();
+  //  }
 
    // Set images src
    this.background.src = "img/bg.png";
+   this.spaceship.src = "img/ship.png";
+   //this.bullet.src = "img/bg.png";
  };
 
 // Creating a drawable object to create the images
 function Drawable() {
-  this.init = function(x,y){
+  this.init = function(x,y,width,height){
       // Default variables;
       this.x = x;
       this.y = y;
+      this.width = width;
+      this.height = height;
   };
   this.speed = 0;
   this.canvasWidth = 0;
@@ -43,6 +71,23 @@ function Background(){
 };
 
 Background.prototype = new Drawable();
+
+// Create Ship object
+function Ship(){
+  this.speed = 3;
+  this.draw = function() {
+    this.context.drawImage(imageRepository.spaceship, this.x, this.y);
+  };
+  // Determine if the action is a move action
+  this.move = function(){
+    if (KEY_STATUS.left || KEY_STATUS.right ||
+			  KEY_STATUS.down || KEY_STATUS.up){
+          // Remove image and redraw new image
+          this.context.clearRect(this.x, this.y, this.width, this.length);
+
+    }
+  };
+}
 
 // Creates the game object that holds all the objects and data for game
 function Game(){

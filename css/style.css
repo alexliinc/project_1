@@ -10,10 +10,11 @@ h1{
   font-family: 'Revalia', cursive;
   color:#0CFFE1;
   font-size: 50px;
+  text-align: center;
 }
 
 canvas {
-  dispay:block;
+  display:block;
   margin: 30px auto 0;
-  border:#FFD687 3px solid;
+  border:#FFD687 3px dashed;
 }

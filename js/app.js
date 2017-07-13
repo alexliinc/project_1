@@ -30,6 +30,7 @@ var starfield;
 var starX = 0;
 var starY = 0;
 var starY2 = -600;
+var gameStarted = false;
 // ------------------------------------------------------
 
 function clearCanvas() {
@@ -266,6 +267,14 @@ function scoreTotal(){
   }
   ctx.fillText('Highscore: ', 440, 50);
   ctx.fillText(highscore, 540, 50);
+  if (!gameStarted){
+    ctx.font = 'bold 50px VT323';
+    ctx.fillText('Space Shooter', width / 2 - 150, height / 2);
+    ctx.font = 'bold 20px VT323';
+    ctx.fillText('Click to Play', width / 2 - 56, height / 2 + 30);
+    ctx.fillText('Use arrow keys to move', width / 2 - 100, height / 2 + 60);
+    ctx.fillText('Use the space bar key to shoot', width / 2 - 100, height / 2 + 90);
+  }
   if (!alive)
   {
     ctx.fillText('Game Over!', 245, height/2);
@@ -277,6 +286,11 @@ function scoreTotal(){
     score = 0;
     highscore = localStorage.getItem("highscore");
   }
+}
+
+function gameStart(){
+  gameStarted = true;
+  canvas.removeEventListener('clicked', gameStart, false);
 }
 
 function init() {
@@ -291,13 +305,14 @@ function init() {
   //setInterval(gameLoop, 25);
   document.addEventListener('keydown', keyDown, false);
   document.addEventListener('keyup', keyUp, false);
+  canvas.addEventListener('click', gameStart, false);
   gameLoop();
 }
 
 function gameLoop() {
   clearCanvas();
   drawStarfield();
-  if (alive){
+  if (alive && gameStarted){
     hitTest();
     shipCollision();
     moveEnemies();

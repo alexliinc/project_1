@@ -11,7 +11,7 @@ var rightKey = false;
 var leftKey = false;
 var upKey = false;
 var downKey = false;
-var enemyTotal = 5;
+var enemyTotal = 3;
 var enemies = [];
 var enemy_x = 50;
 var enemy_y = -45;
@@ -25,7 +25,11 @@ var lasers = [];
 var score = 0;
 var alive = true;
 var lives = 3;
-var highscore = localStorage.getItem("highscore");;
+var highscore = localStorage.getItem("highscore");
+var starfield;
+var starX = 0;
+var starY = 0;
+var starY2 = -600;
 // ------------------------------------------------------
 
 function clearCanvas() {
@@ -231,9 +235,22 @@ function continueButton(){
   canvas.removeEventListener('click', continueButton, false);
 }
 
+function drawStarfield(){
+  ctx.drawImage(starfield, starX, starY);
+  ctx.drawImage(starfield, starX, starY2);
+  if (starY > 600){
+    starY = -599;
+  }
+  if (starY2 > 600){
+    starY2 = -599;
+  }
+  starY += 1;
+  starY2 += 1;
+}
+
 function scoreTotal(){
-  ctx.font = 'bold 18px Arial';
-  ctx.fillStyle = 'black';
+  ctx.font = 'bold 20px VT323';
+  ctx.fillStyle = 'white';
   // ctx.fillText(content, x position, y position)
   ctx.fillText('Score: ', 440, 30);
   ctx.fillText(score, 500, 30);
@@ -254,10 +271,11 @@ function scoreTotal(){
     ctx.fillText('Game Over!', 245, height/2);
     // context.fillRect(x,y,width,height);
     ctx.fillRect((width/2) - 50, (height / 2) + 10, 100, 40);
-    ctx.fillStyle = 'white';
+    ctx.fillStyle = 'black';
     ctx.fillText('Continue?', 252, (height / 2) + 35);
     canvas.addEventListener('click',continueButton,false);
     score = 0;
+    highscore = localStorage.getItem("highscore");
   }
 }
 
@@ -269,7 +287,7 @@ function init() {
   ship = new Image();
   ship.src = 'img/ship.png';
   starfield = new Image();
-  starfield.src = 'img/space.jpg';
+  starfield.src = 'img/starfield.png';
   //setInterval(gameLoop, 25);
   document.addEventListener('keydown', keyDown, false);
   document.addEventListener('keyup', keyUp, false);
@@ -278,6 +296,7 @@ function init() {
 
 function gameLoop() {
   clearCanvas();
+  drawStarfield();
   if (alive){
     hitTest();
     shipCollision();

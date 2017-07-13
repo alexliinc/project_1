@@ -22,7 +22,9 @@ var enemy;
 var ship;
 var laserTotal = 2;
 var lasers = [];
-var score;
+var score = 0;
+var alive = true;
+var lives = 3;
 // ------------------------------------------------------
 
 function clearCanvas() {
@@ -97,7 +99,6 @@ function moveLaser(){
   }
 }
 
-
 function keyDown(e){
   switch(e.keyCode) {
     case 39:
@@ -153,6 +154,7 @@ function hitTest(){
       &&  lasers[i][0] >= enemies[j][0] // is laser x >= to enemies x
       &&  lasers[i][0] <= (enemies[j][0] + enemies[j][2])){ // is laser x less then or equal enemies x and its height
         remove = true;
+        score += 10;
         enemies.splice(j,1);
         enemies.push([Math.random() * 500 + 50,-45,enemy_w,enemy_h,speed]);// creating new enemy random spawn
       }
@@ -164,7 +166,63 @@ function hitTest(){
   }
 }
 
+function shipCollision() {
+  var ship_xw = ship_x + ship_w,
+      ship_yh = ship_y + ship_h;
+  for (var i = 0; i < enemies.length; i++) {
+    if (ship_x > enemies[i][0] &&
+       ship_x < enemies[i][0] + enemy_w &&
+       ship_y > enemies[i][1] &&
+       ship_y < enemies[i][1] + enemy_h)
+    {
+      checkLives();
+    }
+    if (ship_xw < enemies[i][0] + enemy_w &&
+       ship_xw > enemies[i][0] &&
+       ship_y > enemies[i][1] &&
+       ship_y < enemies[i][1] + enemy_h)
+    {
+      checkLives();
+    }
+    if (ship_yh > enemies[i][1] &&
+       ship_yh < enemies[i][1] + enemy_h &&
+       ship_x > enemies[i][0] &&
+       ship_x < enemies[i][0] + enemy_w)
+    {
+      checkLives();
+    }
+    if (ship_yh > enemies[i][1] &&
+       ship_yh < enemies[i][1] + enemy_h &&
+       ship_xw < enemies[i][0] + enemy_w &&
+       ship_xw > enemies[i][0])
+    {
+      checkLives();
+    }
+  }
+}
 
+function checkLives(){
+  lives--;
+  if (lives>0){
+    reset();
+  } else if (lives == 0) {
+    alive = false;
+  }
+}
+
+function scoreTotal(){
+  ctx.font = 'bold 18px Arial';
+  ctx.fillStyle = 'yellow';
+  // ctx.fillText(content, x position, y position)
+  ctx.fillText('Score: ', 490, 30);
+  ctx.fillText(score, 550, 30);
+  ctx.fillText('Lives: ', 10, 30);
+  ctx.fillText(lives, 68, 30);
+  if (!alive)
+  {
+    ctx.fillText('Game Over!', width/2, height/2)
+  }
+}
 
 function init() {
   canvas = document.getElementById('gameBoard');
@@ -175,19 +233,26 @@ function init() {
   ship.src = 'img/ship.png';
   starfield = new Image();
   starfield.src = 'img/space.jpg';
-  setInterval(gameLoop, 25);
+  //setInterval(gameLoop, 25);
   document.addEventListener('keydown', keyDown, false);
   document.addEventListener('keyup', keyUp, false);
+  gameLoop();
 }
 
 function gameLoop() {
   clearCanvas();
-  hitTest();
-  moveEnemies();
-  moveLaser();
-  drawEnemies();
-  drawShip();
-  drawLaser();
+  if (alive){
+    hitTest();
+    shipCollision();
+    moveEnemies();
+    moveLaser();
+    drawEnemies();
+    drawShip();
+    drawLaser();
+    scoreTotal();
+  }
+  scoreTotal();
+  game = setTimeout(gameLoop,1000 / 30);
 }
 
 

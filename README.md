@@ -20,3 +20,14 @@ Day 2:<br/>
 -On Trello wrote up all cards about what has to be done<br/>
 -~~Waiting for my approve... fingers crossed~~<br/>
 -Project APPROVED <br/>
+
+Day 3:<br/>
+-got imgs showing but dectection isn't working<br/>
+-HIT A WALL<br/>
+-VERY SAD<br/>
+-STARTING OVER<br/>
+
+Day 4:<br/>
+-great start<br/>
+-I got images pulling up and DECTECTION IS WORKING<br/>
+-VERY HAPPY<br/>

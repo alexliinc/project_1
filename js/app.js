@@ -20,7 +20,14 @@ var enemy_h = 128;
 var speed = 3;
 var enemy;
 var ship;
+var laserTotal = 2;
+var lasers = [];
+var score;
 // ------------------------------------------------------
+
+function clearCanvas() {
+  ctx.clearRect(0,0,width,height);
+}
 
 for (var i = 0; i < enemyTotal; i++) {
   enemies.push([enemy_x, enemy_y, enemy_w, enemy_h, speed]);
@@ -29,8 +36,7 @@ for (var i = 0; i < enemyTotal; i++) {
 
 function drawEnemies(){
   for (var i = 0; i < enemies.length; i++){
-    ctx.fillStyle = "blue";
-    ctx.fillRect(enemies[i][0],enemies[i][1],enemy_w,enemy_h);
+    ctx.drawImage(enemy, enemies[i][0], enemies[i][1])
   }
 }
 
@@ -41,48 +47,6 @@ function moveEnemies(){
     } else if (enemies[i][1] > height - 1){
       enemies[i][1] = -45;
     }
-  }
-}
-
-function clearCanvas() {
-  ctx.clearRect(0,0,width,height);
-}
-
-function keyDown(e){
-  switch(e.keyCode) {
-    case 39:
-        rightKey = true;
-        break;
-    case 37:
-        leftKey = true;
-        break;
-    case 38:
-        upKey = true;
-        break;
-    case 40:
-        downKey = true;
-        break;
-    default:
-        console.log('not correct button')
-  }
-}
-
-function keyUp(e){
-  switch(e.keyCode) {
-    case 39:
-        rightKey = false;
-        break;
-    case 37:
-        leftKey = false;
-        break;
-    case 38:
-        upKey = false;
-        break;
-    case 40:
-        downKey = false;
-        break;
-    default:
-        console.log('not correct button')
   }
 }
 
@@ -111,16 +75,106 @@ function drawShip() {
   if ((ship_y + ship_h) >= height){
     ship_y = height - ship_h;
   }
-  ctx.drawImage(ship, ship_x, ship_y);
+  ctx.drawImage(ship, ship_x, ship_y); //img postionX postionY
 }
+
+function drawLaser(){
+  if (lasers.length){
+    for (var i = 0; i < lasers.length; i++){
+      ctx.fillStyle = 'red';
+      ctx.fillRect(lasers[i][0],lasers[i][1],lasers[i][2],lasers[i][3])// for each position x, y, width, height
+    }
+  }
+}
+
+function moveLaser(){
+  for (var i = 0; i < lasers.length; i++){
+    if (lasers[i][1] > -11){
+      lasers[i][1] -= 10;
+    } else if (lasers[i][1] < -10){
+      lasers.splice(i, 1);
+    }
+  }
+}
+
+
+function keyDown(e){
+  switch(e.keyCode) {
+    case 39:
+        rightKey = true;
+        break;
+    case 37:
+        leftKey = true;
+        break;
+    case 38:
+        upKey = true;
+        break;
+    case 40:
+        downKey = true;
+        break;
+    case 32:
+        if (lasers.length < laserTotal)
+        {
+          lasers.push([ship_x + 25, ship_y - 20, 4, 20]);
+          break;
+        }
+        else {
+          break;
+        }
+    default:
+        console.log('not correct button')
+  }
+}
+
+function keyUp(e){
+  switch(e.keyCode) {
+    case 39:
+        rightKey = false;
+        break;
+    case 37:
+        leftKey = false;
+        break;
+    case 38:
+        upKey = false;
+        break;
+    case 40:
+        downKey = false;
+        break;
+    default:
+        console.log('not correct button')
+  }
+}
+
+function hitTest(){
+  var remove = false;
+  for (var i = 0; i < lasers.length; i++){
+    for (var j = 0; j < enemies.length; j++){
+      if (lasers[i][1] <= (enemies[j][1] + enemies[j][3]) // is laser y less then or equal enemies y and its height
+      &&  lasers[i][0] >= enemies[j][0] // is laser x >= to enemies x
+      &&  lasers[i][0] <= (enemies[j][0] + enemies[j][2])){ // is laser x less then or equal enemies x and its height
+        remove = true;
+        enemies.splice(j,1);
+        enemies.push([Math.random() * 500 + 50,-45,enemy_w,enemy_h,speed]);// creating new enemy random spawn
+      }
+    }
+    if (remove == true){
+      lasers.splice(i,1);
+      remove = false;
+    }
+  }
+}
+
+
 
 function init() {
   canvas = document.getElementById('gameBoard');
   ctx = canvas.getContext('2d');
   enemy = new Image();
-  enemy.src = "";
+  enemy.src = 'img/enemy.png';
   ship = new Image();
-  ship.src = "";
+  ship.src = 'img/ship.png';
+  starfield = new Image();
+  starfield.src = 'img/space.jpg';
   setInterval(gameLoop, 25);
   document.addEventListener('keydown', keyDown, false);
   document.addEventListener('keyup', keyUp, false);
@@ -128,9 +182,12 @@ function init() {
 
 function gameLoop() {
   clearCanvas();
+  hitTest();
   moveEnemies();
+  moveLaser();
   drawEnemies();
   drawShip();
+  drawLaser();
 }
 
 

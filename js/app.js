@@ -17,7 +17,7 @@ var enemy_x = 50;
 var enemy_y = -45;
 var enemy_w = 128;
 var enemy_h = 128;
-var speed = 3;
+var speed = 6;
 var enemy;
 var ship;
 var laserTotal = 2;
@@ -25,6 +25,7 @@ var lasers = [];
 var score = 0;
 var alive = true;
 var lives = 3;
+var highscore = localStorage.getItem("highscore");;
 // ------------------------------------------------------
 
 function clearCanvas() {
@@ -201,6 +202,19 @@ function shipCollision() {
   }
 }
 
+function reset(){
+  var enemy_reset_x = 50;
+  ship_x = (width / 2) - 25;
+  ship_y = height - 75;
+  ship_w = 40;
+  ship_h = 26;
+  for (var i = 0; i < enemies.length; i++){
+    enemies[i][0] = enemy_reset_x;
+    enemies[i][1] = -45;
+    enemy_reset_x = enemy_reset_x + enemy_w + 50;
+  }
+}
+
 function checkLives(){
   lives--;
   if (lives>0){
@@ -210,17 +224,40 @@ function checkLives(){
   }
 }
 
+function continueButton(){
+  alive = true;
+  lives = 3;
+  reset();
+  canvas.removeEventListener('click', continueButton, false);
+}
+
 function scoreTotal(){
   ctx.font = 'bold 18px Arial';
-  ctx.fillStyle = 'yellow';
+  ctx.fillStyle = 'black';
   // ctx.fillText(content, x position, y position)
-  ctx.fillText('Score: ', 490, 30);
-  ctx.fillText(score, 550, 30);
+  ctx.fillText('Score: ', 440, 30);
+  ctx.fillText(score, 500, 30);
   ctx.fillText('Lives: ', 10, 30);
   ctx.fillText(lives, 68, 30);
+  if (highscore !== null){
+    if (score > highscore){
+      localStorage.setItem("highscore", score);
+    }
+  }
+  else {
+    localStorage.setItem("highscore", 0);
+  }
+  ctx.fillText('Highscore: ', 440, 50);
+  ctx.fillText(highscore, 540, 50);
   if (!alive)
   {
-    ctx.fillText('Game Over!', width/2, height/2)
+    ctx.fillText('Game Over!', 245, height/2);
+    // context.fillRect(x,y,width,height);
+    ctx.fillRect((width/2) - 50, (height / 2) + 10, 100, 40);
+    ctx.fillStyle = 'white';
+    ctx.fillText('Continue?', 252, (height / 2) + 35);
+    canvas.addEventListener('click',continueButton,false);
+    score = 0;
   }
 }
 
@@ -249,7 +286,6 @@ function gameLoop() {
     drawEnemies();
     drawShip();
     drawLaser();
-    scoreTotal();
   }
   scoreTotal();
   game = setTimeout(gameLoop,1000 / 30);

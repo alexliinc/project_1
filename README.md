@@ -5,7 +5,8 @@ Developer @GA in DENVER<br/>
 <h1>WELCOME!!!</h1><br/>
 
 Project Idea:<br/>
-Player is a spaceship who is trying to nagivate through an asteroid belt. <br/>
+Player is a spaceship who is trying to navigate through an asteroid belt. <br/>
+TOOLS: HTML CSS JS and CANVAS <br/>
 
 Day 1:<br/>
 -Created my first wireframe for project<br/>
@@ -22,12 +23,13 @@ Day 2:<br/>
 -Project APPROVED <br/>
 
 Day 3:<br/>
--got imgs showing but dectection isn't working<br/>
+-got imgs showing but detection isn't working<br/>
 -HIT A WALL<br/>
 -VERY SAD<br/>
 -STARTING OVER<br/>
 
 Day 4:<br/>
--great start<br/>
--I got images pulling up and DECTECTION IS WORKING<br/>
+-NEW DAY <br/>
+-Great start<br/>
+-I got images pulling up and detection IS WORKING<br/>
 -VERY HAPPY<br/>

@@ -1,3 +1,15 @@
+.homeCenter {
+  text-align: center;
+  font-family: 'Revalia', cursive;
+}
+
+.homeCenter p {
+  text-align: center;
+  color: black;
+  margin: 25px;
+  padding: 5px;
+}
+
 body{
   background: url('../img/spacebackground.jpg');
   background-repeat: no-repeat;
@@ -9,7 +21,7 @@ body{
 h1{
   font-family: 'Revalia', cursive;
   color:#0CFFE1;
-  font-size: 50px;
+  font-size: 55px;
   text-align: center;
 }
 
@@ -17,4 +29,24 @@ canvas {
   display:block;
   margin: 30px auto 0;
   border:#FFD687 3px dashed;
+}
+
+a:link {
+  color: #DA0F7A;
+  background-color: transparent;
+  text-decoration: none;
+  font-size: 25px;
+}
+
+a:visited {
+    color: #DA0F7A;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #0CFFE1;
+    background-color: transparent;
+    text-decoration: none;
+    border: #6E719C 3px solid;
 }

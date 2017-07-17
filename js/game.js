@@ -22,6 +22,7 @@ var enemy_y = -45;
 var enemy_w = 128;
 var enemy_h = 128;
 var speed = 6;
+var enemy_speed = 5;
 var enemy;
 var ship;
 var laserTotal = 2;
@@ -177,7 +178,8 @@ function hitTest(){
         remove = true;
         score += 10;
         enemies.splice(j,1);
-        enemies.push([Math.random() * 500 + 50,-45,enemy_w,enemy_h,speed]);// creating new enemy random spawn
+        enemies.push([Math.random() * 500 + 50,-45,enemy_w,enemy_h,enemy_speed]);// creating new enemy random spawn
+        enemy_speed  = Math.floor(Math.random() * 15) + 1;
       }
     }
     if (remove == true){
@@ -225,6 +227,8 @@ function shipCollision() {
 
 // Reset postions of ship and enemies
 function reset(){
+  enemy_speed = 5;
+  lasers = [];
   var enemy_reset_x = 10;
   ship_x = (width / 2) - 25;
   ship_y = height - 75;
@@ -271,13 +275,13 @@ function drawStarfield(){
 
 // Way of keeping track of score
 function scoreTotal(){
-  ctx.font = 'bold 20px VT323';
+  ctx.font = 'bold 30px VT323';
   ctx.fillStyle = 'white';
   // ctx.fillText(content, x position, y position)
   ctx.fillText('Score: ', 440, 30);
-  ctx.fillText(score, 500, 30);
+  ctx.fillText(score, 520, 30);
   ctx.fillText('Lives: ', 10, 30);
-  ctx.fillText(lives, 68, 30);
+  ctx.fillText(lives, 90, 30);
   // How highscore is tracked
   if (highscore !== null){
     if (score > highscore){
@@ -288,7 +292,7 @@ function scoreTotal(){
     localStorage.setItem("highscore", 0);
   }
   ctx.fillText('Highscore: ', 440, 50);
-  ctx.fillText(highscore, 540, 50);
+  ctx.fillText(highscore, 565, 50);
   // When game is not started
   if (!gameStarted){
     ctx.font = 'bold 50px VT323';
@@ -303,7 +307,7 @@ function scoreTotal(){
   {
     ctx.fillText('Game Over!', 252, height/2);
     // context.fillRect(x,y,width,height);
-    ctx.fillRect((width/2) - 60, (height / 2) + 10, 100, 40);
+    ctx.fillRect((width/2) - 60, (height / 2) + 10, 130, 40);
     ctx.fillStyle = 'black';
     ctx.fillText('Continue?', 252, (height / 2) + 35);
     canvas.addEventListener('click',continueButton,false);

@@ -37,14 +37,14 @@ canvas {
 
 /*LINK*/
 a:link {
-  color: #DA0F7A;
+  color: black;
   background-color: transparent;
   text-decoration: none;
   font-size: 25px;
 }
 
 a:visited {
-    color: #DA0F7A;
+    color: black;
     background-color: transparent;
     text-decoration: none;
 }

@@ -3,6 +3,7 @@ Author: Alex Li<br/>
 Developer @GA in DENVER<br/>
 <hr />
 <h1>WELCOME!!!</h1><br/>
+[HOME PAGE](https://alexliinc.github.io/project_1/
 
 Project Idea:<br/>
 Player is a spaceship who is trying to navigate through an asteroid belt. <br/>

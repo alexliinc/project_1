@@ -35,7 +35,7 @@ canvas {
   border:#FFD687 3px dashed;
 }
 
-/*LINK*/
+/*links on the pages have these properties*/
 a:link {
   color: black;
   background-color: transparent;
@@ -54,4 +54,24 @@ a:hover {
     background-color: transparent;
     text-decoration: none;
     border: #6E719C 3px solid;
+}
+
+/*MEDIA QUERY*/
+@media (max-width: 600px) {
+  h1{
+    color: red;
+  }
+}
+
+/*ANIMATIONS*/
+@-webkit-keyframes rotating {
+    from{
+        -webkit-transform: rotate(0deg);
+    }
+    to{
+        -webkit-transform: rotate(360deg);
+    }
+}
+.astronunt{
+  -webkit-animation: rotating 9s linear infinite;
 }
